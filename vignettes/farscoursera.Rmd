@@ -1,0 +1,29 @@
+---
+title: "FARS Coursera"
+author: "Michael Rahija"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# The farscoursera package provides functions for analyzing data taken from the  Fatality Analysis Reporting (FARS) System which provides the yearly traffic accident fatatlities covering the entire United States. The following functions are provided:
+
+## fars_read
+This function reads in a dataset caontaining the FARS data for a particular year.
+
+## make_filename
+Takes a year as an input and returns the name of the file which contains data for that year. 
+
+## fars_read_years
+This functions takes multiple years, and returns a list of data frames containing the FARS data for those years.
+
+## fars_summarize_years
+This function takes a vector of strings (years) and returns a tibble containing the number of fatal injuries by year and month.If the years are not 2013-2015, there will be an error.
+
+## fars_map_state
+This functions takes a state number and year, and returns a plot showing all traffic fatalities. If the years are not 2013-2015, or the number doesn't correspond to a state, there will be an error.
+#'
+
