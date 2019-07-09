@@ -11,6 +11,13 @@ vignette: >
 
 # The farscoursera package provides functions for analyzing data taken from the  Fatality Analysis Reporting (FARS) System which provides the yearly traffic accident fatatlities covering the entire United States. The following functions are provided:
 
+```{r setup, include=FALSE}
+library(farsCoursera)
+
+make_filename("2013")
+
+
+```
 ## fars_read
 This function reads in a dataset caontaining the FARS data for a particular year.
 
@@ -25,5 +32,5 @@ This function takes a vector of strings (years) and returns a tibble containing 
 
 ## fars_map_state
 This functions takes a state number and year, and returns a plot showing all traffic fatalities. If the years are not 2013-2015, or the number doesn't correspond to a state, there will be an error.
-#'
+
 
