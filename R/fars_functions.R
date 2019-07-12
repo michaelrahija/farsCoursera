@@ -1,38 +1,16 @@
-
-#' This set of functions are used to analyze the Fatality Analysis Reporting datasets.
+#' fars_read
 #'
-#' \itemize{} 	\code{fars_read()} takes a string (file name), and returns a data frame containing the corresponding data.
+#' This function takes a string (file name), and returns a data frame containing the corresponding data.
 #' If the filename is not correct it will results in an error.
-#' \itemize{} 	\code{make_file()} takes a string (year), and returns a string which is the file name of
-#' the data for that particular year. If the year is not 2013-2015, there will be an error.
-#' \itemize{} 	\code{fars_read_years()} does the same as fars_read, but takes a vector of strings (years)
-#' and returns a list containing dataframes.If the years are not 2013-2015, there will be an error.
-#' \itemize{} \code{fars_summarize_years()} takes a vector of strings (years) and returns a tibble containing
-#' the number of fatal injuries by year and month.If the years are not 2013-2015, there will be an error.
-#' \itemize{} \code{fars_map_state()} takes a state number and year, and returns a plot showing all traffic fatalities.
-#' If the years are not 2013-2015, or the number doesn't correspond to a state, there will be an error.
 #'
 #' @param filename A string giving the file name of dataset
-#' @param year A string which defines a year, 2013, 2014, or 2015
-#' @param years A svector containing strings which contains 1 or more years.
-#' @param state.num A number which represents a state
 #'
-#' @return See description.
-#'
-#' @export
-#' @examples
-#' head(fars_read("accident_2013.csv.bz2"))
-#' make_filename("2014")
-#' fars_read_years(c("2014","2015"))
-#' fars_summarize_years(c("2014","2015"))
-#' fars_map_state(state.num = "10", year = "2015")
 #' @importFrom readr read_csv
-#' @importFrom tidyr spread
-#' @importFrom dplyr tbl_df mutate select bind_rows group_by summarize filter
-#' @importFrom maps map
-#' @importFrom graphics points
+#' @importFrom dplyr tbl_df
 #'
-#' @name FARSfunctions
+#' @return A dataframe containing the corresponding data.
+#' @export
+#'
 
 fars_read <- function(filename) {
   if(!file.exists(filename))
@@ -43,13 +21,36 @@ fars_read <- function(filename) {
   dplyr::tbl_df(data)
 }
 
-#' @rdname FARSfunctions
+#' make_filename
+#'
+#' This function takes a string (year), and returns a string which is the file name of
+#' the data for that particular year. If the year is not 2013-2015, there will be an error.
+#'
+#' @param year  string which defines a year, 2013, 2014, or 2015
+#'
+#' @return A file name (string) for the data corresponding to a particular year.
+#' @export
+#'
+
+
 make_filename <- function(year) {
   year <- as.integer(year)
   sprintf("accident_%d.csv.bz2", year)
 }
 
-#' @rdname FARSfunctions
+#' fars_read_years
+#'
+#' This function does the same as fars_read, but takes a vector of strings (years)
+#' and returns a list containing dataframes.If the years are not 2013-2015, there will be an error.
+#'
+#' @param years   A vector containing strings which contains 1 or more years.
+#'
+#' @importFrom dplyr tbl_df mutate select
+#' @return A list of dataframes
+#' @export
+#'
+
+
 fars_read_years <- function(years) {
   lapply(years, function(year) {
     file <- make_filename(year)
@@ -63,8 +64,19 @@ fars_read_years <- function(years) {
     })
   })
 }
-
-#' @rdname FARSfunctions
+#' fars_summarize_years
+#'
+#' This function takes a vector of strings (years) and returns a tibble containing
+#' the number of fatal injuries by year and month.If the years are not 2013-2015, there will be an error.
+#'
+#' @param years   A vector containing strings which contains 1 or more years.
+#'
+#' @importFrom dplyr bind_rows group_by summarize
+#' @importFrom tidyr spread
+#'
+#' @return A tibble containing the number of fatal injuries by year and month
+#' @export
+#'
 fars_summarize_years <- function(years) {
   dat_list <- fars_read_years(years)
   dplyr::bind_rows(dat_list) %>%
@@ -73,7 +85,23 @@ fars_summarize_years <- function(years) {
     tidyr::spread(year, n)
 }
 
-#' @rdname FARSfunctions
+#' fars_map_state
+#'
+#' This function takes a state number and year, and returns a plot showing all traffic fatalities.
+#' If the years are not 2013-2015, or the number doesn't correspond to a state, there will be an error.
+#'
+#' @param state.num A number which represents a state
+#' @param year  string which defines a year, 2013, 2014, or 2015
+#'
+#'
+#' @importFrom dplyr  filter
+#' @importFrom maps map
+#' @importFrom graphics points
+#'
+#' @return A plot shoing all traffic fatalities.
+#' @export
+#'
+
 fars_map_state <- function(state.num, year) {
   filename <- make_filename(year)
   data <- fars_read(filename)
@@ -94,5 +122,7 @@ fars_map_state <- function(state.num, year) {
     graphics::points(LONGITUD, LATITUDE, pch = 46)
   })
 }
+
+
 
 
