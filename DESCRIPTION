@@ -11,7 +11,8 @@ LazyData: true
 Imports: dplyr,
     tidyr,
     graphics,
-    readr
+    readr,
+    maps
 Suggests: knitr,
     rmarkdown,
     testthat
