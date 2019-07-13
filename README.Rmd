@@ -1,1 +1,0 @@
-This package is the final programming assignment for the R packages coursera course.
